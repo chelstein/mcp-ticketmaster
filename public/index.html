@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ticketmaster MCP Console</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">TM</span>
+        <span class="title">Ticketmaster MCP Console</span>
+      </div>
+      <div class="auth" id="auth-pill">Checking session…</div>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="search" role="tab">Search</button>
+      <button class="tab" data-tab="cart" role="tab">Cart</button>
+      <button class="tab" data-tab="orders" role="tab">Orders</button>
+      <button class="tab" data-tab="account" role="tab">Account</button>
+    </nav>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <main>
+      <!-- ── Search ─────────────────────────────────────────── -->
+      <section class="panel" id="panel-search">
+        <form id="search-form" class="search-form">
+          <div class="row">
+            <label>
+              <span>Keyword</span>
+              <input name="keyword" type="text" required placeholder="Taylor Swift, Lakers, Hamilton…" />
+            </label>
+            <label>
+              <span>Location</span>
+              <input name="location" type="text" placeholder="New York, NY or 10001" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <span>Start date</span>
+              <input name="startDate" type="date" />
+            </label>
+            <label>
+              <span>End date</span>
+              <input name="endDate" type="date" />
+            </label>
+            <label class="small">
+              <span>Max results</span>
+              <input name="maxResults" type="number" min="1" max="50" value="20" />
+            </label>
+            <button type="submit" class="primary">Search</button>
+          </div>
+        </form>
+
+        <div class="results" id="search-results" aria-live="polite">
+          <p class="muted">Run a search to see events.</p>
+        </div>
+      </section>
+
+      <!-- ── Cart ───────────────────────────────────────────── -->
+      <section class="panel" id="panel-cart" hidden>
+        <div class="panel-head">
+          <h2>Cart</h2>
+          <button id="cart-refresh" class="ghost">Refresh</button>
+        </div>
+        <div id="cart-body"><p class="muted">Click Refresh to load cart.</p></div>
+      </section>
+
+      <!-- ── Orders ─────────────────────────────────────────── -->
+      <section class="panel" id="panel-orders" hidden>
+        <div class="panel-head">
+          <h2>Order history</h2>
+          <button id="orders-refresh" class="ghost">Refresh</button>
+        </div>
+        <div id="orders-body"><p class="muted">Click Refresh to load orders.</p></div>
+      </section>
+
+      <!-- ── Account ────────────────────────────────────────── -->
+      <section class="panel" id="panel-account" hidden>
+        <h2>Account</h2>
+        <div id="account-body"><p class="muted">Loading…</p></div>
+        <div class="actions">
+          <button id="account-status" class="ghost">Check status</button>
+          <button id="account-login" class="primary">Get login link</button>
+          <button id="account-logout" class="danger">Log out</button>
+        </div>
+        <div id="login-instructions" hidden></div>
+      </section>
+    </main>
+
+    <!-- Confirm-purchase modal -->
+    <div class="modal" id="confirm-modal" hidden>
+      <div class="modal-card">
+        <h3>Confirm purchase</h3>
+        <p>You're about to <strong>buy these tickets</strong>. This is final.</p>
+        <div id="confirm-cart"></div>
+        <div class="modal-actions">
+          <button class="ghost" id="confirm-cancel">Cancel</button>
+          <button class="danger" id="confirm-go">Place order</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
