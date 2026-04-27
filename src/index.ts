@@ -10,6 +10,8 @@
 
 import express from "express";
 import type { Request, Response } from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import {
@@ -525,9 +527,14 @@ function createMcpServer(): Server {
 const app = express();
 app.use(express.json({ limit: "4mb" }));
 
-app.get("/", (_req: Request, res: Response) => {
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const publicDir = path.resolve(__dirname, "..", "public");
+
+app.get("/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", service: "strider-ticketmaster-mcp" });
 });
+
+app.use(express.static(publicDir));
 
 app.post("/mcp", async (req: Request, res: Response) => {
   const server = createMcpServer();
