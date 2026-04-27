@@ -141,6 +141,18 @@ async function randomDelay(min = 800, max = 2500): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// ─── Browser Mutex ───────────────────────────────────────────────────────────
+// The browser/context/page are a process-wide singleton. Concurrent HTTP
+// requests would race on page navigation, so each tool call acquires this lock.
+
+let browserChain: Promise<unknown> = Promise.resolve();
+
+export function withBrowserLock<T>(op: () => Promise<T>): Promise<T> {
+  const next = browserChain.then(op, op);
+  browserChain = next.catch(() => {});
+  return next;
+}
+
 // ─── Browser Initialization ──────────────────────────────────────────────────
 
 async function initBrowser(): Promise<{
